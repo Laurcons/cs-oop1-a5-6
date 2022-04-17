@@ -1,0 +1,135 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+        <meta charset="utf-8"/>
+	    <title>domain.h</title>
+	    <link href="../../third-party/google-code-prettify/prettify-CppCoverage.css" type="text/css" rel="stylesheet" />
+	    <script type="text/javascript" src="../../third-party/google-code-prettify/prettify.js"></script>
+	</head>
+    <body onload="prettyPrint()">
+        <h4></h4>
+        <pre class="prettyprint lang-cpp linenums">
+#pragma once
+#include &lt;string&gt;
+#include &lt;iostream&gt;
+
+namespace bub {
+
+	// Structure for a duration in minutes and seconds.
+	struct duration {
+		int m;
+		int s;
+
+<span style = "background-color:#dfd">		bool operator==(const bub::duration&amp; other) const {
+			return this-&gt;m == other.m &amp;&amp; this-&gt;s == other.s;
+		}</span>
+	};
+
+	// Class for storing data about a Tutorial.
+	class tutorial {
+	private:
+		std::string title;
+		std::string presenter;
+		bub::duration duration;
+		int likes;
+		std::string link;
+	public:
+		// Creates a tutorial with some default values.
+<span style = "background-color:#dfd">		tutorial() {
+			this-&gt;title = "";
+			this-&gt;presenter = "";
+			this-&gt;duration = bub::duration{ 0, 0 };
+			this-&gt;likes = 0;
+			this-&gt;link = "";
+		};</span>
+		// Creates a tutorial with custom values.
+		tutorial(
+			std::string title,
+			std::string presenter,
+			bub::duration duration,
+			int likes,
+			std::string link
+		) :
+<span style = "background-color:#dfd">			title{ title },
+			presenter{ presenter },
+			duration{ duration },
+			likes{ likes },
+			link{ link }
+		{}</span>
+		// Copies a tutorial.
+		tutorial(const tutorial&amp; t) :
+<span style = "background-color:#dfd">			title{ t.title },
+			presenter{ t.presenter },
+			duration{ t.duration },
+			likes{ t.likes },
+			link{ t.link }
+		{}</span>
+		// Assigns a tutorial to itself.
+<span style = "background-color:#dfd">		tutorial&amp; operator=(const tutorial&amp; t) {
+			this-&gt;title = t.title;
+			this-&gt;presenter = t.presenter;
+			this-&gt;duration = t.duration;
+			this-&gt;likes = t.likes;
+			this-&gt;link = t.link;
+			return *this;
+		}</span>
+
+		// Retrieves the title of the tutorial.
+<span style = "background-color:#dfd">		std::string get_title() const { return this-&gt;title; }</span>
+		// Sets the title of the tutorial. Returns itself.
+<span style = "background-color:#dfd">		tutorial&amp; set_title(std::string title) { this-&gt;title = title; return *this; }</span>
+		// Gets the presenter of the tutorial.
+<span style = "background-color:#dfd">		std::string get_presenter() const { return this-&gt;presenter; }</span>
+		// Sets the presenter of the tutorial. Returns itself. 
+<span style = "background-color:#dfd">		tutorial&amp; set_presenter(std::string presenter) { this-&gt;presenter = presenter; return *this; }</span>
+		// Gets the duration of the tutorial.
+<span style = "background-color:#dfd">		bub::duration get_duration() const { return this-&gt;duration; }</span>
+		// Sets the duration of the tutorial. Returns itself.
+<span style = "background-color:#dfd">		tutorial&amp; set_duration(bub::duration duration) { this-&gt;duration = duration; return *this; }</span>
+		// Gets the like count of the tutorial.
+<span style = "background-color:#dfd">		int get_likes() const { return this-&gt;likes; }</span>
+		// Sets the like count of the tutorial. Returns itself.
+<span style = "background-color:#dfd">		tutorial&amp; set_likes(int likes) { this-&gt;likes = likes; return *this; }</span>
+		// Increments the like count by one. Returns itself.
+<span style = "background-color:#dfd">		tutorial&amp; inc_likes() { this-&gt;likes++; return *this; }</span>
+		// Gets the link of the tutorial.
+<span style = "background-color:#dfd">		std::string get_link() const { return this-&gt;link; }</span>
+		// Sets the link of the tutorial. Returns itself.
+<span style = "background-color:#dfd">		tutorial&amp; set_link(std::string link) { this-&gt;link = link; return *this; }</span>
+
+		// Operator for checking equality.
+<span style = "background-color:#dfd">		bool operator==(const tutorial&amp; other) {
+			return this-&gt;title == other.title;
+		}</span>
+		// Operator for checking inequality.
+<span style = "background-color:#dfd">		bool operator!=(const tutorial&amp; other) {
+			return !(*this == other);
+		}</span>
+
+		// Operator for out stream.
+<span style = "background-color:#dfd">		friend std::ostream&amp; operator&lt;&lt;(std::ostream&amp; os, const tutorial&amp; t) {
+			return os</span>
+				&lt;&lt; "\"" &lt;&lt; t.title &lt;&lt; "\" "
+				&lt;&lt; "by " &lt;&lt; t.presenter &lt;&lt; ", "
+				&lt;&lt; t.duration.m &lt;&lt; ":" &lt;&lt; t.duration.s &lt;&lt; " "
+				&lt;&lt; t.likes &lt;&lt; " likes, at " &lt;&lt; t.link;
+<span style = "background-color:#dfd">		}</span>
+
+	};
+
+}</pre>
+        <hr />
+        <table width="100%">
+            <thead>
+                <tr>
+                    <th align="center">
+                        <small>Generated by</small>
+                        <a href="https://github.com/OpenCppCoverage/OpenCppCoverage/releases">
+                            <strong>OpenCppCoverage (Version: 0.9.9.0)</strong>
+                        </a>
+                    </th>
+                </tr>
+            </thead>
+        </table>
+    </body>
+</html>

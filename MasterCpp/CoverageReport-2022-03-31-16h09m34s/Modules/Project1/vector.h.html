@@ -1,0 +1,164 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+        <meta charset="utf-8"/>
+	    <title>vector.h</title>
+	    <link href="../../third-party/google-code-prettify/prettify-CppCoverage.css" type="text/css" rel="stylesheet" />
+	    <script type="text/javascript" src="../../third-party/google-code-prettify/prettify.js"></script>
+	</head>
+    <body onload="prettyPrint()">
+        <h4></h4>
+        <pre class="prettyprint lang-cpp linenums">
+#pragma once
+
+namespace bub {
+
+	// Dynamic array
+	template &lt;class T&gt;
+	class vector {
+	private:
+		T* elem;
+		int length;
+		int capacity;
+	public:
+		// Creates a vector.
+		vector();
+		// Copies a vector.
+		vector(const vector&amp;);
+		// Destroys a vector.
+		~vector();
+		// Adds an element to the vector.
+		void add(T elem);
+		// Adds an element to the vector.
+		vector operator+(const T);
+		// Removes an element at a certain position in the vector.
+		void remove(int);
+		// Returns the element at the position in the vector. Negative values are allowed.
+		T&amp; at(int) const;
+		// Returns the element at the position in the vector. Negative values are allowed.
+		T&amp; operator[](int) const;
+		// Assigns a vector to itself.
+		vector operator=(const vector&amp;);
+		// Returns the amount of items in the vector.
+		int size() const;
+
+		class iterator {
+			T* pointer;
+		public:
+<span style = "background-color:#dfd">			iterator(T* p) : pointer(p) {}</span>
+
+<span style = "background-color:#dfd">			T&amp; operator*() const { return *this-&gt;pointer; }</span>
+			T* operator-&gt;() const { return this-&gt;pointer; }
+
+<span style = "background-color:#dfd">			iterator&amp; operator++() { this-&gt;pointer++; return *this; }</span>
+
+			friend bool operator==(const iterator&amp; a, const iterator&amp; b) {
+				return a.pointer == b.pointer;
+			}
+<span style = "background-color:#dfd">			friend bool operator!=(const iterator&amp; a, const iterator&amp; b) {
+				return a.pointer != b.pointer;
+			}</span>
+		};
+
+		// Returns a begin iterator on the vector.
+<span style = "background-color:#dfd">		iterator begin() { return iterator(&amp;this-&gt;elem[0]); }</span>
+		// Returns an end iterator on the vector.
+<span style = "background-color:#dfd">		iterator end() { return iterator(&amp;this-&gt;elem[this-&gt;length]); }</span>
+	};
+
+	template &lt;class T&gt;
+<span style = "background-color:#dfd">	vector&lt;T&gt;::vector() {
+		this-&gt;capacity = 3;
+		this-&gt;length = 0;
+		this-&gt;elem = DBG_NEW T[3];
+	}</span>
+
+	template &lt;class T&gt;
+<span style = "background-color:#dfd">	vector&lt;T&gt;::~vector() {
+		delete[] this-&gt;elem;
+	}</span>
+
+	template &lt;class T&gt;
+<span style = "background-color:#dfd">	vector&lt;T&gt;::vector(const vector&lt;T&gt;&amp; v) {
+		this-&gt;length = v.length;
+		this-&gt;capacity = v.capacity;
+		this-&gt;elem = DBG_NEW T[this-&gt;capacity];
+		for (int i = 0; i &lt; v.length; i++) {
+			this-&gt;elem[i] = v.elem[i];
+		}
+	}</span>
+
+	template &lt;class T&gt;
+<span style = "background-color:#dfd">	vector&lt;T&gt; vector&lt;T&gt;::operator=(const vector&lt;T&gt;&amp; v) {
+		this-&gt;length = v.length;
+		this-&gt;capacity = v.capacity;
+		delete[] this-&gt;elem;
+		this-&gt;elem = DBG_NEW T[this-&gt;capacity];
+		for (int i = 0; i &lt; v.length; i++) {
+			this-&gt;elem[i] = v.elem[i];
+		}
+		return *this;
+	}</span>
+
+	template &lt;class T&gt;
+<span style = "background-color:#dfd">	void vector&lt;T&gt;::add(T elem) {</span>
+		// resize if necessary
+<span style = "background-color:#dfd">		if (this-&gt;length == this-&gt;capacity) {
+			this-&gt;capacity *= 2;
+			T* oldp = this-&gt;elem;
+			this-&gt;elem = DBG_NEW T[this-&gt;capacity];
+			for (int i = 0; i &lt; this-&gt;length; i++) {
+				this-&gt;elem[i] = oldp[i];
+			}
+			delete[] oldp;</span>
+		}
+		// add element
+<span style = "background-color:#dfd">		this-&gt;elem[this-&gt;length] = elem;
+		this-&gt;length++;
+	}</span>
+
+	template &lt;class T&gt;
+<span style = "background-color:#dfd">	vector&lt;T&gt; vector&lt;T&gt;::operator+(const T elem) {
+		vector&lt;T&gt; newv = *this;
+		newv.add(elem);
+		return newv;
+	}</span>
+
+	template &lt;class T&gt;
+<span style = "background-color:#dfd">	void vector&lt;T&gt;::remove(int pos) {
+		for (int i = pos; i &lt; this-&gt;length - 1; i++)
+			this-&gt;elem[i] = this-&gt;elem[i + 1];
+		this-&gt;length--;
+	}</span>
+
+	template &lt;class T&gt;
+<span style = "background-color:#dfd">	T&amp; vector&lt;T&gt;::at(int pos) const {
+		if (pos &lt; 0)</span>
+<span style = "background-color:#fdd">			pos = this-&gt;length + pos;</span>
+<span style = "background-color:#dfd">		return this-&gt;elem[pos];
+	}</span>
+
+	template &lt;class T&gt;
+<span style = "background-color:#dfd">	T&amp; vector&lt;T&gt;::operator[](int pos) const {
+		return this-&gt;at(pos);
+	}</span>
+
+	template &lt;class T&gt;
+<span style = "background-color:#dfd">	int vector&lt;T&gt;::size() const { return this-&gt;length; }</span>
+
+}</pre>
+        <hr />
+        <table width="100%">
+            <thead>
+                <tr>
+                    <th align="center">
+                        <small>Generated by</small>
+                        <a href="https://github.com/OpenCppCoverage/OpenCppCoverage/releases">
+                            <strong>OpenCppCoverage (Version: 0.9.9.0)</strong>
+                        </a>
+                    </th>
+                </tr>
+            </thead>
+        </table>
+    </body>
+</html>
